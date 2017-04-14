@@ -20,11 +20,11 @@ local function run (msg, matches)
     local hash = 'anti-flood:enabled:'..chat
     if matches[1] == 'enable' then
       redis:set(hash, true)
-      return 'Anti-flood enabled on chat'
+      return 'Anti-flood attivo in questa chat'
     end
     if matches[1] == 'disable' then
       redis:del(hash)
-      return 'Anti-flood disabled on chat'
+      return 'Anti-flood disattivo in questa chat'
     end
   end
 end
@@ -40,7 +40,7 @@ local function pre_process (msg)
   local enabled = redis:get(hash_enable)
 
   if enabled then
-    print('anti-flood enabled')
+    print('anti-flood attivo')
     -- Check flood
     if msg.from.type == 'user' then
       -- Increase the number of messages from the user on the chat
@@ -49,16 +49,16 @@ local function pre_process (msg)
       if msgs > NUM_MSG_MAX then
         local receiver = get_receiver(msg)
         local user = msg.from.id
-        local text = 'User '..user..' is flooding'
+        local text = 'Utente '..user..' sta floddando'
         local chat = msg.to.id
 
         send_msg(receiver, text, ok_cb, nil)
         if msg.to.type ~= 'chat' then
           print("Flood in not a chat group!")
         elseif user == tostring(our_id) then
-          print('I won\'t kick myself')
+          print('Non posso kickare me stesso')
         elseif is_sudo(msg) then
-          print('I won\'t kick an admin!')
+          print('Non posso kickare un admin!')
         else
           -- Ban user
           -- TODO: Check on this plugin bans
@@ -75,7 +75,7 @@ local function pre_process (msg)
 end
 
 return {
-  description = 'Plugin to kick flooders from group.',
+  description = 'Come usare Anti-Flood.',
   usage = {},
   patterns = {
     '^!antiflood (enable)$',
