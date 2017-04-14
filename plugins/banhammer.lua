@@ -24,7 +24,7 @@ end
 local function ban_user(user_id, chat_id)
   local chat = 'chat#id'..chat_id
   if user_id == tostring(our_id) then
-    send_msg(chat, "I won't kick myself!", ok_cb,  true)
+    send_msg(chat, "Non posso bannarmi!", ok_cb,  true)
   else
     -- Save to redis
     local hash =  'banned:'..chat_id..':'..user_id
@@ -56,7 +56,7 @@ local function pre_process(msg)
       print('Checking invited user '..user_id)
       local banned = is_banned(user_id, msg.to.id)
       if banned then
-        print('User is banned!')
+        print('Utente bannato!')
         kick_user(user_id, msg.to.id)
       end
     end
@@ -131,7 +131,7 @@ local function run(msg, matches)
       if matches[2] == 'delete' then
         local hash =  'banned:'..chat_id..':'..user_id
         redis:del(hash)
-        return 'User '..user_id..' unbanned'
+        return 'Utente '..user_id..' sbannato'
       end
     else
       return 'This isn\'t a chat group'
@@ -195,10 +195,10 @@ end
 return {
   description = "Plugin to manage bans, kicks and white/black lists.",
   usage = {
-    "!whitelist <enable>/<disable>: Enable or disable whitelist mode",
-    "!whitelist user <user_id>: Allow user to use the bot when whitelist mode is enabled",
+    "!whitelist <enable>/<disable>: Attiva o disattiva la whitelist",
+    "!whitelist user <user_id>: Permetti ad un utente di fare quello che vuole quando whitelist è attiva",
     "!whitelist chat: Allow everybody on current chat to use the bot when whitelist mode is enabled",
-    "!whitelist delete user <user_id>: Remove user from whitelist",
+    "!whitelist delete user <user_id>: Rimuovi un utente dalla whitelist",
     "!whitelist delete chat: Remove chat from whitelist",
     "!ban user <user_id>: Kick user from chat and kicks it if joins chat again",
     "!ban delete <user_id>: Unban user",
