@@ -60,11 +60,11 @@ local function run (msg, matches)
   local chatId = msg.to.id
   if matches[1] == 'enable' then
     enableAntiBot(chatId)
-    return 'Anti-bot enabled on this chat'
+    return 'Anti-bot attivo in questa chat'
   end
   if matches[1] == 'disable' then
     disableAntiBot(chatId)
-    return 'Anti-bot disabled on this chat'
+    return 'Anti-bot disattivo in questa chat'
   end
   if matches[1] == 'allow' then
     local userId = matches[2]
@@ -79,14 +79,14 @@ local function run (msg, matches)
   if matches[1] == 'chat_add_user' or matches[1] == 'chat_add_user_link' then
     local user = msg.action.user or msg.from
     if isABot(user) then
-      print('It\'s a bot!')
+      print('E un BOT!')
       if isAntiBotEnabled(chatId) then
         print('Anti bot is enabled')
         local userId = user.id
         if not isBotAllowed(userId, chatId) then
           kickUser(userId, chatId)
         else
-          print('This bot is allowed')
+          print('Questo bot ha il permesso')
         end
       end
     end
@@ -94,12 +94,12 @@ local function run (msg, matches)
 end
 
 return {
-  description = 'When bot enters group kick it.',
+  description = 'Per usare il comando anti-bot.',
   usage = {
-    '!antibot enable: Enable Anti-bot on current chat',
-    '!antibot disable: Disable Anti-bot on current chat',
-    '!antibot allow <botId>: Allow <botId> on this chat',
-    '!antibot disallow <botId>: Disallow <botId> on this chat'
+    '!antibot enable: Per attivare Anti-bot',
+    '!antibot disable: Per disattivare Anti-bot',
+    '!antibot allow <botId>: Allow <botId> in questa chat',
+    '!antibot disallow <botId>: Disallow <botId> in questa chat'
   },
   patterns = {
     '^!antibot (allow) (%d+)$',
